@@ -24,6 +24,7 @@ urlpatterns = patterns(
     url(r'^delete_startup/(?P<pk>\d+)?/?$', views.DeleteStartup.as_view()),
     url(r'^like_startup/(?P<startup_id>\d+)?/?$', views.like_startup, name='like_startup'),
     url(r'^dislike_startup/(?P<startup_id>\d+)?/?$', views.dislike_startup, name='dislike_startup'),
+    url(r'^json_list/(?P<k>[0-9]+)/(?P<date1>\d{4}-\d{2}-\d{2})/(?P<date2>\d{4}-\d{2}-\d{2})/$', views.json_list),
 )
 
 # User-uploaded files like profile pics need to be served in development

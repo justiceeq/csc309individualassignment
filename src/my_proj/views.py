@@ -5,6 +5,12 @@ from django.db.models import F
 from django.template.loader import get_template
 from django.shortcuts import render
 
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.renderers import JSONRenderer
+from rest_framework.parsers import JSONParser
+from profiles.serializers import StartUpSerializer
+
 class HomePage(generic.TemplateView):
     template_name = "home.html"
 
@@ -75,6 +81,30 @@ def dislike_startup(request, startup_id):
     context = {'object':object}
     
     return render(request, 'startup_detail.html', context)
+    
+    
+class JSONResponse(HttpResponse):
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
+
+
+@csrf_exempt
+def json_list(request, k, date1, date2):
+    
+    if request.method == 'GET':
+        startups = StartUpIdea.objects.filter(pub_date__range=[date1, date2]).order_by('-likes')[:int(k)]
+        serializer = StartUpSerializer(startups, many=True)
+        return JSONResponse(serializer.data)
+    
+    elif request.method == 'POST':
+        data = JSONParser().parse(request)
+        serializer = StartUpSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return JSONResponse(serializer.data, status=201)
+        return JSONResponse(serializer.errors, status=400)
 
 '''    
 def like_startup(request):
