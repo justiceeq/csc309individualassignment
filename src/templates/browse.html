@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}About{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" %}
+{% endblock %}
+
+<!-- Benefits of the Django application -->
+{% block container %}
+<div id="sec2" class="text-page">
+  <div class="container">
+<h1>Start-up Ideas</h1>
+<ul>
+{% for idea in object_list %}
+    <li><a href="/detail/{{ idea.id }}">{{ idea.name }} - {{ idea.pub_date|date }}
+    {% if idea.category %}
+        <div class="col-md-12">
+        <a href="/category/{{ idea.category.id }}"><span class="label label-primary">{{ idea.category.name }}</span></a>
+        </div>
+    {% endif %}
+    {% if idea.tags %}
+        <div class="col-md-12">
+        {% for tag in idea.tags.all %}
+        <a href="/tag/{{ tag.slug }}"><span class="label label-success">{{ tag.name }}</span></a>
+        {% endfor %}
+        </div>
+        {% endif %}
+    </li></a>
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
+  </div>
+</div>
+{% endblock %}

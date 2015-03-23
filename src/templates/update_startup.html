@@ -1,0 +1,9 @@
+<form action="" method="post">
+{% csrf_token %}
+<p><input type="hidden" id="id_creator" name="creator" value="{{ user.id }}"></p>
+<div>{{form.name}}</div>
+<div>{{form.description}}</div>
+<div>{{form.category}}</div>
+<div>{{form.tags}}</div>
+<input type="submit" value="Submit" />
+</form>

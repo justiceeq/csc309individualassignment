@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}Create Startup{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" %}
+{% endblock %}
+
+
+{% block container %}
+<div id="sec2" class="text-page">
+  <div class="container">
+      <div class="post col-md-12">
+
+<form action="" method="post">
+{% csrf_token %}
+{{ form.non_field_errors }}
+
+<p><input type="hidden" id="id_creator" name="creator" value="{{ user.id }}"></p>
+
+{{ form.name.errors }}
+    <label for="{{ form.name.id_name }}">Startup Name:</label>
+    <div class="input-group">{{form.name}}</div>
+{{ form.description.errors }}
+    <label for="{{ form.description.id_description }}">Description:</label>
+    <div class="input-group">{{form.description}}</div>
+{{ form.category.errors }}
+    <label for="{{ form.category.id_category }}">Category:</label>
+    <div>{{form.category}}</div>
+{{ form.tags.errors }}
+    <label for="{{ form.tags.id_tags }}">Tags:</label>
+    <div class="input-group">{{form.tags}}</div>
+<input type="submit" value="Submit" />
+</form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

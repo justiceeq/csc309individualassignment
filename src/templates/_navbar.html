@@ -1,0 +1,3 @@
+<li {% if active_link == "home" %}class="active"{% endif %}><a href="{% url 'home' %}">Home</a></li>
+<li {% if active_link == "browse" %}class="active"{% endif %}><a href="{% url 'browse' %}">Browse</a></li>
+<li {% if active_link == "create" %}class="active"{% endif %}><a href="{% url 'create' %}">Create</a></li>

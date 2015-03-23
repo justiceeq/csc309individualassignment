@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}About{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" %}
+{% endblock %}
+
+<!-- Benefits of the Django application -->
+{% block container %}
+<div id="sec2" class="text-page">
+  <div class="container">
+<h1>Your Listings</h1>
+<ul>
+{% for idea in object_list %}
+{% if idea.creator.user.id == user.id %}
+    <li><a href="/detail/{{ idea.id }}">{{ idea.pub_date|date }} - {{ idea.name }}</li></a>
+    <a href="/edit_startup/{{ idea.id }}"><button id ="edit" data-catid="{{idea.id}}" class="btn btn-mini btn-primary" type="button">Edit</button></a><a href="/delete_startup/{{ idea.id }}"><button id ="delete" data-catid="{{idea.id}}" class="btn btn-mini btn-primary" type="button">Delete</button></a>
+{% endif %}
+{% empty %}
+    <li>No articles yet.</li>
+{% endfor %}
+</ul>
+  </div>
+</div>
+
+{% endblock %}

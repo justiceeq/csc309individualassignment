@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }}About{% endblock %}
+
+{% block navbar-left %}
+  {% include "_navbar.html" with active_link="about" %}
+{% endblock %}
+
+
+{% block container %}
+<div id="sec2" class="text-page">
+  <div class="container">
+    <div class="row">
+<div class="col-md-12 text-center">
+<h1>{{ object.name }}</h1>
+<h3>{{ object.creator.user.name }}</h3>
+<h4>{{ object.pub_date }}</h4>
+<div class="text-center">
+
+<div class="panel panel-default">
+  <div class="panel-body">
+    <p>{{ object.description }}</p>
+  </div>
+</div>
+
+
+</div>
+</div>
+{% if object.category %}
+<div class="col-md-12">
+<a href="/category/{{ object.category.id }}"><span class="label label-primary">{{ object.category.name }}</span></a>
+</div>
+{% endif %}
+{% if object.tags %}
+<div class="col-md-12">
+{% for tag in object.tags.all %}
+<a href="/tag/{{ tag.slug }}"><span class="label label-success">{{ tag.name }}</span></a>
+{% endfor %}
+</div>
+{% endif %}
+</div>
+<div class="row">
+  <div class="row">
+  </div>
+</div>  
+<div class="row">
+
+ <div class="col-md-12">
+<b id="like_count">{{ object.likes }}</b> people like this Idea
+<br />
+{% if user.is_authenticated %}
+        <a href="/like_startup/{{ object.id }}"><button id ="likes" data-catid="{{object.id}}" class="btn btn-mini btn-primary" type="button">Like</button></a>
+        <a href="/dislike_startup/{{ object.id }}"><button id ="likes" data-catid="{{object.id}}" class="btn btn-mini btn-primary" type="button">Dislike</button></a>
+{% endif %}
+</div>
+
+</div>
+</div>
+  </div>
+</div>
+
+
+
+{% endblock %}
