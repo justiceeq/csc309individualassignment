@@ -3,13 +3,19 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from profiles.models import *
 from django.db.models import F
 from django.template.loader import get_template
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from profiles.serializers import StartUpSerializer
+
+from random import randint
+from django.views.generic import TemplateView
+from chartjs.views.lines import BaseLineChartView
+
+
 
 class HomePage(generic.TemplateView):
     template_name = "home.html"
@@ -25,10 +31,26 @@ class StartUpCreate(CreateView):
     
 class BrowsePage(generic.ListView):
     model = StartUpIdea
-    template_name = "browse.html"
+    template_name = "main_browse.html"
     
     def get_queryset(self):
-        return StartUpIdea.objects.order_by('-name')
+        return StartUpIdea.objects.order_by('-pub_date')
+        
+class NameBrowsePage(generic.ListView):
+    model = StartUpIdea
+    template_name = "main_browse.html"
+    
+    
+    def get_queryset(self):
+        return StartUpIdea.objects.order_by('name')
+        
+class DateBrowsePage(generic.ListView):
+    model = StartUpIdea
+    template_name = "main_browse.html"
+    
+    
+    def get_queryset(self):
+        return StartUpIdea.objects.order_by('-pub_date')
     
 class StartUpDetail(generic.DetailView):
     model = StartUpIdea
@@ -105,6 +127,39 @@ def json_list(request, k, date1, date2):
             serializer.save()
             return JSONResponse(serializer.data, status=201)
         return JSONResponse(serializer.errors, status=400)
+        
+
+class LineChartJSONView(BaseLineChartView):
+    def get_labels(self):
+        """Return 7 labels."""
+        cat_list = []
+        for e in Category.objects.all():
+            cat_list.append(str(e.name))
+        #return ['cat1', 'cat2', 'cat3', 'cat4', 'cat5' ]
+        return cat_list
+
+    def get_data(self):
+        """Return 3 dataset to plot."""
+        int_list = []
+        counter = 1
+        
+        for e in Category.objects.all():
+            int_list.append(int(StartUpIdea.objects.filter(category__id=counter).count()))
+            counter = counter + 1
+            
+        return [int_list]
+        
+        '''
+        return [[StartUpIdea.objects.filter(category__id=1).count(), 
+        StartUpIdea.objects.filter(category__id=2).count(), 
+        StartUpIdea.objects.filter(category__id=3).count(), 
+        StartUpIdea.objects.filter(category__id=4).count(), 
+        StartUpIdea.objects.filter(category__id=5).count()]]
+        '''
+
+
+line_chart = TemplateView.as_view(template_name='line_chart.html')
+line_chart_json = LineChartJSONView.as_view()
 
 '''    
 def like_startup(request):

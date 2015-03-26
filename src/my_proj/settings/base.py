@@ -36,6 +36,10 @@ SECRET_KEY = env('SECRET_KEY')
 
 ALLOWED_HOSTS = []
 
+#GOOGLE CHARTS SETUP
+GOOGLECHARTS_API = "1.1"
+GOOGLECHARTS_PACKAGES = ["corechart"]
+
 # Application definition
 
 INSTALLED_APPS = (
@@ -48,6 +52,8 @@ INSTALLED_APPS = (
     'profiles',
     'accounts',
     'taggit',
+    'rest_framework',
+    'chartjs',
 
     'django.contrib.admin',
     'django.contrib.auth',

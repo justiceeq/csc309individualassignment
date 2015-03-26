@@ -1,0 +1,13 @@
+{% load staticfiles %}
+<html>
+ <head>
+ <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.min.js"></script>
+ <script type="text/javascript" src="{% static 'site/js/highcharts.js' %}"></script>
+ <strong>{% load chartit %}</strong>
+ <strong>{{ weatherchart|load_charts:”container” }}</strong>
+ </head>
+ <body>
+ <div id=”container”>
+ </div>
+ </body>
+ </html>

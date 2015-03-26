@@ -15,6 +15,8 @@ urlpatterns = patterns(
     url(r'^users/', include(profiles.urls, namespace='profiles')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^create/', views.StartUpCreate.as_view(success_url="/"), name='create'),
+    url(r'^browse/sort/name/', views.NameBrowsePage.as_view(), name='sorted_by_name'),
+    url(r'^browse/sort/date/', views.DateBrowsePage.as_view(), name='sorted_by_date'),
     url(r'^browse/', views.BrowsePage.as_view(), name='browse'),
     url(r'^category/(?P<category_id>\d+)?/?$', views.CategoryListView.as_view(), name='category'),
     url(r'^tag/(?P<slug>[-\w]+)/$', views.TagIndexView.as_view(), name='tags'),
@@ -25,6 +27,8 @@ urlpatterns = patterns(
     url(r'^like_startup/(?P<startup_id>\d+)?/?$', views.like_startup, name='like_startup'),
     url(r'^dislike_startup/(?P<startup_id>\d+)?/?$', views.dislike_startup, name='dislike_startup'),
     url(r'^json_list/(?P<k>[0-9]+)/(?P<date1>\d{4}-\d{2}-\d{2})/(?P<date2>\d{4}-\d{2}-\d{2})/$', views.json_list),
+    url(r'^charts/$', views.line_chart, name='chart'),
+    url(r'^chart_json/$', views.line_chart_json, name='line_chart_json'),
 )
 
 # User-uploaded files like profile pics need to be served in development
